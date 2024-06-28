@@ -19,10 +19,14 @@
         <item
             android:id="@+id/nav_add_field"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="Add Field" />
+            android:title="Dodaj nowe pole" />
         <item
             android:id="@+id/nav_add_expense"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="Add Expense" />
+            android:title="Dodaj wydatek" />
+        <item
+            android:id="@+id/nav_config"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Konfiguracja" />
     </group>
 </menu>

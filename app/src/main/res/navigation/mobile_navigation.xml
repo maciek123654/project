@@ -26,12 +26,18 @@
     <fragment
         android:id="@+id/nav_add_field"
         android:name="com.example.myfarm2024.ui.addfield.AddFieldFragment"
-        android:label="Add Field"
+        android:label="Dodaj nowe pole"
         tools:layout="@layout/fragment_add_field" />
 
     <fragment
         android:id="@+id/nav_add_expense"
         android:name="com.example.myfarm2024.balance.ExpenseFragment"
-        android:label="Add Field"
+        android:label="Dodaj wydatek"
         tools:layout="@layout/fragment_add_field" />
+
+    <fragment
+        android:id="@+id/nav_config"
+        android:name="com.example.myfarm2024.ui.configuration.ConfigFragment"
+        android:label="Konfiguracja"
+        tools:layout="@layout/fragment_config" />
 </navigation>

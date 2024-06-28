@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper
 class FieldDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
     companion object {
-        private const val DATABASE_VERSION = 1
+        private const val DATABASE_VERSION = 2
         private const val DATABASE_NAME = "FieldDatabaseV4.db"
         private const val TABLE_FIELDS = "fields"
         private const val COLUMN_ID = "id"
@@ -25,6 +25,8 @@ class FieldDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE
         // Nowa tabela dla konta i wydatków
         private const val TABLE_ACCOUNT = "account"
         private const val COLUMN_ACCOUNT_ID = "accountId"
+        private const val COLUMN_ACCOUNT_NAME = "accountName"
+        private const val COLUMN_ACCOUNT_TYPE = "accountType"
         private const val COLUMN_CURRENT_BALANCE = "currentBalance"
 
         private const val TABLE_EXPENSES = "expenses"
@@ -55,6 +57,8 @@ class FieldDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE
 
         val CREATE_ACCOUNT_TABLE = ("CREATE TABLE $TABLE_ACCOUNT (" +
                 "$COLUMN_ACCOUNT_ID INTEGER PRIMARY KEY," +
+                "$COLUMN_ACCOUNT_NAME TEXT," +
+                "$COLUMN_ACCOUNT_TYPE TEXT," +
                 "$COLUMN_CURRENT_BALANCE REAL)")
 
         val CREATE_EXPENSES_TABLE = ("CREATE TABLE $TABLE_EXPENSES (" +
@@ -73,11 +77,6 @@ class FieldDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE
         db.execSQL(CREATE_ACCOUNT_TABLE)
         db.execSQL(CREATE_EXPENSES_TABLE)
         db.execSQL(CREATE_EXPENSE_CATEGORIES_TABLE)
-
-        // Dodajemy początkowy stan konta, na przykład 0.0
-        val initialValues = ContentValues()
-        initialValues.put(COLUMN_CURRENT_BALANCE, 0.0)
-        db.insert(TABLE_ACCOUNT, null, initialValues)
 
         // Dodajemy przykładowe kategorie wydatków
         addDefaultExpenseCategories(db)
@@ -187,5 +186,15 @@ class FieldDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE
             put(COLUMN_SUBCATEGORY_NAME, subcategoryName)
         }
         db.insert(TABLE_EXPENSE_CATEGORIES, null, values)
+    }
+
+    fun addAccount(accountName: String, accountType: String, initialBalance: Double = 0.0) {
+        val db = writableDatabase
+        val values = ContentValues().apply {
+            put(COLUMN_ACCOUNT_NAME, accountName)
+            put(COLUMN_ACCOUNT_TYPE, accountType)
+            put(COLUMN_CURRENT_BALANCE, initialBalance)
+        }
+        db.insert(TABLE_ACCOUNT, null, values)
     }
 }
