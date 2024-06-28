@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper
 class FieldDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
     companion object {
-        private const val DATABASE_VERSION = 2
+        private const val DATABASE_VERSION = 3
         private const val DATABASE_NAME = "FieldDatabaseV4.db"
         private const val TABLE_FIELDS = "fields"
         private const val COLUMN_ID = "id"
@@ -35,6 +35,7 @@ class FieldDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE
         private const val COLUMN_EXPENSE_CATEGORY = "category"
         private const val COLUMN_EXPENSE_SUBCATEGORY = "subcategory"
         private const val COLUMN_EXPENSE_DATE = "date"
+        private const val COLUMN_ACCOUNT_ID_EXPENSE = "accountId" // Nowa kolumna
 
         // Tabela kategorii i podkategorii wydatków
         private const val TABLE_EXPENSE_CATEGORIES = "expense_categories"
@@ -66,7 +67,9 @@ class FieldDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE
                 "$COLUMN_EXPENSE_AMOUNT REAL," +
                 "$COLUMN_EXPENSE_CATEGORY TEXT," +
                 "$COLUMN_EXPENSE_SUBCATEGORY TEXT," +
-                "$COLUMN_EXPENSE_DATE TEXT)")
+                "$COLUMN_EXPENSE_DATE TEXT," +
+                "$COLUMN_ACCOUNT_ID_EXPENSE INTEGER," + // Nowa kolumna
+                "FOREIGN KEY($COLUMN_ACCOUNT_ID_EXPENSE) REFERENCES $TABLE_ACCOUNT($COLUMN_ACCOUNT_ID))")
 
         val CREATE_EXPENSE_CATEGORIES_TABLE = ("CREATE TABLE $TABLE_EXPENSE_CATEGORIES (" +
                 "$COLUMN_CATEGORY_ID INTEGER PRIMARY KEY," +
@@ -105,23 +108,23 @@ class FieldDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE
         db.insert(TABLE_FIELDS, null, values)
     }
 
-    fun addExpense(amount: Double, category: String, subcategory: String, date: String) {
+    fun addExpense(amount: Double, category: String, subcategory: String, date: String, accountId: Int) {
         val values = ContentValues()
         values.put(COLUMN_EXPENSE_AMOUNT, amount)
         values.put(COLUMN_EXPENSE_CATEGORY, category)
         values.put(COLUMN_EXPENSE_SUBCATEGORY, subcategory)
         values.put(COLUMN_EXPENSE_DATE, date)
+        values.put(COLUMN_ACCOUNT_ID_EXPENSE, accountId) // Przypisanie accountId
 
         val db = this.writableDatabase
         db.insert(TABLE_EXPENSES, null, values)
 
         // Update current balance
-        val currentBalance = getCurrentBalance()
+        val currentBalance = getAccountBalance(accountId)
         val newBalance = currentBalance - amount
         val updateValues = ContentValues()
         updateValues.put(COLUMN_CURRENT_BALANCE, newBalance)
-        db.update(TABLE_ACCOUNT, updateValues, "$COLUMN_ACCOUNT_ID = ?", arrayOf("1"))
-
+        db.update(TABLE_ACCOUNT, updateValues, "$COLUMN_ACCOUNT_ID = ?", arrayOf(accountId.toString()))
     }
 
     @SuppressLint("Range")
@@ -179,6 +182,21 @@ class FieldDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE
         return currentBalance
     }
 
+    @SuppressLint("Range")
+    fun getAccountBalance(accountId: Int): Double {
+        val db = this.readableDatabase
+        val cursor = db.rawQuery("SELECT $COLUMN_CURRENT_BALANCE FROM $TABLE_ACCOUNT WHERE $COLUMN_ACCOUNT_ID = ?", arrayOf(accountId.toString()))
+        var currentBalance = 0.0
+
+        if (cursor.moveToFirst()) {
+            currentBalance = cursor.getDouble(cursor.getColumnIndex(COLUMN_CURRENT_BALANCE))
+        }
+
+        cursor.close()
+
+        return currentBalance
+    }
+
     fun addExpenseSubcategory(categoryName: String, subcategoryName: String) {
         val db = writableDatabase
         val values = ContentValues().apply {
@@ -196,5 +214,26 @@ class FieldDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE
             put(COLUMN_CURRENT_BALANCE, initialBalance)
         }
         db.insert(TABLE_ACCOUNT, null, values)
+    }
+
+    @SuppressLint("Range")
+    fun getAllAccounts(): List<Pair<Int, String>> {
+        val accounts = mutableListOf<Pair<Int, String>>()
+
+        val db = this.readableDatabase
+        val query = "SELECT $COLUMN_ACCOUNT_ID, $COLUMN_ACCOUNT_NAME FROM $TABLE_ACCOUNT"
+        val cursor = db.rawQuery(query, null)
+
+        if (cursor.moveToFirst()) {
+            do {
+                val accountId = cursor.getInt(cursor.getColumnIndex(COLUMN_ACCOUNT_ID))
+                val accountName = cursor.getString(cursor.getColumnIndex(COLUMN_ACCOUNT_NAME))
+                accounts.add(Pair(accountId, accountName))
+            } while (cursor.moveToNext())
+        }
+
+        cursor.close()
+
+        return accounts
     }
 }
