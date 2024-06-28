@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="land_classes">
+        <item>Klasa I</item>
+        <item>Klasa II</item>
+        <item>Klasa IIIa</item>
+        <item>Klasa IIIb</item>
+        <item>Klasa IVa</item>
+        <item>Klasa IVb</item>
+        <item>Klasa V</item>
+        <item>Klasa VI</item>
+    </string-array>
+</resources>

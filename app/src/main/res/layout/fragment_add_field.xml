@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/editTextFieldId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Identyfikator Działki"
+        android:inputType="text"
+        android:minHeight="48dp" />
+
+    <EditText
+        android:id="@+id/editTextFieldNumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Numer Działki"
+        android:inputType="number"
+        android:minHeight="48dp" />
+
+    <EditText
+        android:id="@+id/editTextFieldArea"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:hint="Podaj wielkość w hektarach"
+        android:minHeight="48dp" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Pola nieobowiązkowe" />
+
+    <EditText
+        android:id="@+id/editTextProvince"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Województwo"
+        android:inputType="text"
+        android:minHeight="48dp" />
+
+    <EditText
+        android:id="@+id/editTextCounty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Powiat"
+        android:inputType="text"
+        android:minHeight="48dp" />
+
+    <EditText
+        android:id="@+id/editTextCommune"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Gmina"
+        android:inputType="text"
+        android:minHeight="48dp"
+        android:autofillHints="" />
+
+    <EditText
+        android:id="@+id/editTextTown"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Miejscowość"
+        android:inputType="text"
+        android:minHeight="48dp" />
+
+    <Spinner
+        android:id="@+id/spinnerLandClass"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Klasa Ziemi"
+        android:entries="@array/land_classes"
+        android:minHeight="48dp" />
+
+    <Button
+        android:id="@+id/buttonSubmit"
+        android:layout_width="380dp"
+        android:layout_height="wrap_content"
+        android:text="Dodaj Pole"
+        android:textAlignment="center" />
+</LinearLayout>
