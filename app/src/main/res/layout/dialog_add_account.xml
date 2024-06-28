@@ -1,0 +1,32 @@
+<!-- res/layout/dialog_add_account.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/editTextAccountName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nazwa konta" />
+
+    <Spinner
+        android:id="@+id/spinnerAccountType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:entries="@array/account_types" />
+
+    <EditText
+        android:id="@+id/editTextInitialBalance"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Początkowy stan konta"
+        android:inputType="numberDecimal" />
+
+    <Button
+        android:id="@+id/buttonAddNewAccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Dodaj konto" />
+</LinearLayout>
