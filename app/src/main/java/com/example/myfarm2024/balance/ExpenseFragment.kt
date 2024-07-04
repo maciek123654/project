@@ -26,7 +26,6 @@ class ExpenseFragment : Fragment() {
     private lateinit var spinnerSubcategory: Spinner
     private lateinit var spinnerAccount: Spinner
     private lateinit var buttonAddExpense: Button
-    private lateinit var buttonAddSubcategory: Button
     private lateinit var editTextNewSubcategory: EditText
 
     private var accountsList: List<Pair<Int, String>> = listOf()
@@ -44,8 +43,6 @@ class ExpenseFragment : Fragment() {
         spinnerSubcategory = view.findViewById(R.id.spinnerSubcategory)
         spinnerAccount = view.findViewById(R.id.spinnerAccount)
         buttonAddExpense = view.findViewById(R.id.buttonAddExpense)
-        buttonAddSubcategory = view.findViewById(R.id.buttonAddSubcategory)
-        editTextNewSubcategory = view.findViewById(R.id.editTextNewSubcategory)
 
         loadCategories()
         loadAccounts()
@@ -72,10 +69,6 @@ class ExpenseFragment : Fragment() {
 
         buttonAddExpense.setOnClickListener {
             addExpense()
-        }
-
-        buttonAddSubcategory.setOnClickListener {
-            addSubcategory()
         }
 
         return view
@@ -123,17 +116,5 @@ class ExpenseFragment : Fragment() {
         }
     }
 
-    private fun addSubcategory() {
-        val newSubcategory = editTextNewSubcategory.text.toString().trim()
-        val category = spinnerCategory.selectedItem.toString()
 
-        if (newSubcategory.isNotEmpty()) {
-            databaseHelper.addExpenseSubcategory(category, newSubcategory)
-            Toast.makeText(requireContext(), "Dodano nową podkategorię", Toast.LENGTH_SHORT).show()
-            // Odśwież listę podkategorii po dodaniu
-            loadSubcategories(category)
-        } else {
-            Toast.makeText(requireContext(), "Podaj nazwę nowej podkategorii", Toast.LENGTH_SHORT).show()
-        }
-    }
 }

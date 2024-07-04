@@ -18,6 +18,7 @@ class ConfigFragment : Fragment() {
 
     private lateinit var databaseHelper: FieldDatabaseHelper
     private lateinit var buttonShowAddAccountDialog: Button
+    private lateinit var buttonShowSubcategoryDialog: Button
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,9 +28,14 @@ class ConfigFragment : Fragment() {
 
         databaseHelper = FieldDatabaseHelper(requireContext())
         buttonShowAddAccountDialog = view.findViewById(R.id.buttonShowAddAccountDialog)
+        buttonShowSubcategoryDialog = view.findViewById(R.id.buttonShowAddSubcategoryDialog)
 
         buttonShowAddAccountDialog.setOnClickListener {
             showAddAccountDialog()
+        }
+
+        buttonShowSubcategoryDialog.setOnClickListener {
+            showAddSubcategoryDialog()
         }
 
         return view
@@ -70,5 +76,43 @@ class ConfigFragment : Fragment() {
         }
 
         alertDialog.show()
+    }
+
+    private fun showAddSubcategoryDialog(){
+        val dialogView = layoutInflater.inflate(R.layout.dialog_add_subcategory, null)
+        val dialogBuilder = AlertDialog.Builder(requireContext())
+            .setView(dialogView)
+            .setTitle("Dodaj nową podkategorię")
+            .setCancelable(true)
+
+        val alertDialog = dialogBuilder.create()
+
+        val spinnerCategory = dialogView.findViewById<Spinner>(R.id.spinnerCategory)
+        val editTextNewSubcategory = dialogView.findViewById<EditText>(R.id.editTextNewSubcategory)
+        val buttonAddNewSubcategory = dialogView.findViewById<Button>(R.id.buttonAddNewSubcategory)
+
+        loadCategories(spinnerCategory)
+
+        buttonAddNewSubcategory.setOnClickListener {
+            val newSubcategory = editTextNewSubcategory.text.toString().trim()
+            val category = spinnerCategory.selectedItem?.toString() ?: ""
+
+            if (newSubcategory.isNotEmpty() && category.isNotEmpty()){
+                databaseHelper.addExpenseSubcategory(category, newSubcategory)
+                alertDialog.dismiss()
+                Toast.makeText(requireContext(), "Dodano nową podkategorię", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(requireContext(), "Podaj nazwę nowej podkategorii i wybirz kategorię główną", Toast.LENGTH_LONG).show()
+            }
+        }
+
+        alertDialog.show()
+    }
+
+    private fun loadCategories(spinner: Spinner){
+        val categories = databaseHelper.getAllExpenseCategories().map {it.first}.distinct()
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, categories)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinner.adapter = adapter
     }
 }

@@ -1,0 +1,32 @@
+<!-- res/layout/dialog_add_subcategory.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Kategoria główna" />
+
+    <Spinner
+        android:id="@+id/spinnerCategory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp" />
+    <EditText
+        android:id="@+id/editTextNewSubcategory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nowa podkategoria" />
+
+    <Button
+        android:id="@+id/buttonAddNewSubcategory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Dodaj podkategorię"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"/>
+</LinearLayout>

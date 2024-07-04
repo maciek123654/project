@@ -59,14 +59,6 @@
         android:layout_height="wrap_content"
         android:prompt="@string/select_subcategory" />
 
-    <EditText
-        android:id="@+id/editTextNewSubcategory"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Nowa podkategoria"
-        android:inputType="text"
-        android:minHeight="48dp" />
-
     <Button
         android:id="@+id/buttonAddExpense"
         android:layout_width="wrap_content"
@@ -75,11 +67,5 @@
         android:layout_marginTop="16dp" />
 
     <!-- Add this Button declaration -->
-    <Button
-        android:id="@+id/buttonAddSubcategory"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Dodaj podkategorię"
-        android:layout_marginTop="16dp" />
 
 </LinearLayout>
